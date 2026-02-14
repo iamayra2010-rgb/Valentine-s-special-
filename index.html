@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>My Secret Valentine 💖</title>
+
+<style>
+body{
+margin:0;
+font-family:'Comic Sans MS',cursive;
+background:linear-gradient(135deg,#ffd6e8,#ffe6f2);
+text-align:center;
+overflow-x:hidden;
+cursor:pointer;
+}
+
+/* Pages */
+.page{display:none;padding:40px;animation:fade .6s ease;}
+.active{display:block;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+h1{color:#ff4da6}
+button{
+padding:10px 20px;
+margin:10px;
+border:none;
+border-radius:25px;
+background:#ffb6d9;
+box-shadow:0 0 15px #ff99cc;
+cursor:pointer;
+transition:.3s;
+}
+button:hover{transform:scale(1.1)}
+
+input{padding:10px;border-radius:20px;border:none}
+
+/* Floating hearts */
+.heart{
+position:fixed;
+width:15px;height:15px;
+background:pink;
+transform:rotate(45deg);
+animation:float 6s linear infinite;
+}
+.heart:before,.heart:after{
+content:"";
+position:absolute;
+width:15px;height:15px;
+background:pink;border-radius:50%;
+}
+.heart:before{top:-8px}
+.heart:after{left:-8px}
+@keyframes float{
+0%{top:100%;left:20%;opacity:1}
+100%{top:-10%;left:80%;opacity:0}
+}
+
+/* Sparkle */
+.sparkle{
+position:fixed;
+width:6px;height:6px;
+background:white;
+border-radius:50%;
+animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:0}50%{opacity:1}}
+
+/* Letter */
+#letter{
+display:none;
+background:white;
+padding:20px;
+width:280px;
+margin:auto;
+border-radius:15px;
+box-shadow:0 0 25px #ff99cc;
+animation:fade .5s ease;
+}
+
+/* Confetti hearts */
+.confetti{
+position:fixed;
+font-size:18px;
+animation:fall 3s linear forwards;
+}
+@keyframes fall{
+0%{transform:translateY(0)}
+100%{transform:translateY(100vh)}
+}
+
+/* Music button */
+.music-btn{
+position:fixed;
+bottom:20px;
+left:20px;
+}
+
+/* Memory Polaroid */
+.polaroid{
+background:white;
+display:inline-block;
+padding:10px;
+margin:10px;
+box-shadow:0 0 15px #ff99cc;
+border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK PAGE -->
+<div id="lock" class="page active">
+<h2>🔐 Enter Secret Password 💕</h2>
+<input type="password" id="pass">
+<br>
+<button onclick="unlock()">Unlock 💖</button>
+<p id="wrong" style="color:red;"></p>
+</div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+<h1>Will You Be My Valentine? 💖</h1>
+<p>You make my world softer 🧸🐱</p>
+<button onclick="yesClick()">YES 💕</button>
+<button id="noBtn" onmouseover="moveNo()">NO 🙈</button>
+<br><br>🐱 🧸 🎀 🐻 💗
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+<h1>Reasons I Like You 💗</h1>
+<p>You make boring days fun.<br>
+Your smile = my weakness.<br>
+You are my comfort person.<br>
+You make everything lighter.</p>
+<button onclick="nextPage(3)">Next 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+<h1>Cheesy Jokes 😂</h1>
+<p>Are you WiFi? I feel connection 💘<br>
+Are you Google? You're everything I search for.<br>
+Are you a charger? Without you I die 🥲</p>
+<button onclick="nextPage(4)">Next 💕</button>
+</div>
+
+<!-- PAGE 4 -->
+<div id="page4" class="page">
+<h1>Love Letter 💌</h1>
+<button onclick="openLetter()">Open Letter</button>
+<div id="letter">
+You are my favorite notification,<br>
+my comfort and my cutest habit.<br>
+I choose you — always. 💞
+</div>
+<button onclick="nextPage(5)">Next 💕</button>
+</div>
+
+<!-- PAGE 5 QUIZ -->
+<div id="page5" class="page">
+<h1>Kitna Pyaar Karte Ho Test 😌</h1>
+<p>Agar main naraz ho jaun?</p>
+<button onclick="quiz('A')">Manaunga 😌</button>
+<button onclick="quiz('B')">Chocolate launga 🍫</button>
+<p id="quizAns"></p>
+<button onclick="nextPage(6)">Next 💕</button>
+</div>
+
+<!-- PAGE 6 FUTURE -->
+<div id="page6" class="page">
+<h1>Our Future 🌸</h1>
+<p>Late night talks<br>
+Matching hoodies<br>
+Cafe dates<br>
+Soft toy gifts 🧸</p>
+<button onclick="nextPage(7)">Next 💕</button>
+</div>
+
+<!-- PAGE 7 MEMORY -->
+<div id="page7" class="page">
+<h1>Memory Wall 📸</h1>
+<div class="polaroid">Our first hi 👀</div>
+<div class="polaroid">That cute moment 💗</div>
+<div class="polaroid">Inside jokes forever 😌</div>
+<button onclick="nextPage(8)">Final 💖</button>
+</div>
+
+<!-- PAGE 8 -->
+<div id="page8" class="page">
+<h1>Officially Mine? 💍💖</h1>
+<button onclick="finalYes()">YES FOREVER 💕</button>
+</div>
+
+<audio id="music" loop>
+<source src="perfect.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()" class="music-btn">🎵 Music</button>
+
+<script>
+/* unlock */
+function unlock(){
+let p=document.getElementById("pass").value;
+if(p==="september"||p==="march"){show("page1")}
+else{document.getElementById("wrong").innerText="Wrong password 😢"}
+}
+
+function show(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
+
+function nextPage(n){show("page"+n)}
+
+/* fake no */
+function moveNo(){
+let btn=document.getElementById("noBtn");
+btn.style.position="absolute";
+btn.style.top=Math.random()*window.innerHeight+"px";
+btn.style.left=Math.random()*window.innerWidth+"px";
+}
+
+/* confetti */
+function yesClick(){
+for(let i=0;i<60;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.innerHTML="💖";
+c.style.left=Math.random()*window.innerWidth+"px";
+document.body.appendChild(c);
+}
+nextPage(2);
+}
+
+function openLetter(){document.getElementById("letter").style.display="block"}
+
+function quiz(ans){
+if(ans==="A"){
+document.getElementById("quizAns").innerText="Certified Cutie Lover 💕"
+}else{
+document.getElementById("quizAns").innerText="Drama but still mine 😌"
+}
+}
+
+function finalYes(){
+alert("Happy Valentine’s Day Cutie 🎀💖");
+}
+
+/* music */
+function toggleMusic(){
+let m=document.getElementById("music");
+if(m.paused){m.play()}else{m.pause()}
+}
+
+/* sparkle generator */
+for(let i=0;i<25;i++){
+let s=document.createElement("div");
+s.className="sparkle";
+s.style.top=Math.random()*window.innerHeight+"px";
+s.style.left=Math.random()*window.innerWidth+"px";
+document.body.appendChild(s);
+}
+</script>
+
+</body>
+</html>
